@@ -1,11 +1,11 @@
-import { memo, DragEventHandler } from 'react';
+import { memo, DragEvent } from 'react';
 import style from './style.module.scss';
 
 export const Dropzone = memo(() => {
-  const onDragOver = (event: DragEventHandler<HTMLLabelElement>) => {
+  const onDragOver = (event: DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
   };
-  const onDrop = (event: DragEventHandler<HTMLLabelElement>) => {
+  const onDrop = (event: DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
   };
 
