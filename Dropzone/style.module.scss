@@ -1,0 +1,32 @@
+.container {
+  outline: 0;
+  display: block;
+  text-decoration: none;
+  color: #000;
+  background-color: #fff;
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: none;
+  border: 1px solid #f1f3f5;
+  position: relative;
+  padding: 16px;
+  max-width: 500px;
+  margin: auto;
+}
+
+.dropzone {
+  box-sizing: border-box;
+  border: 2px dashed #ced4da;
+  padding: 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 150ms ease;
+  position: relative;
+  background-color: #f8f9fa;
+  display: flex;
+}
+
+.fileInput {
+  display: none;
+}
