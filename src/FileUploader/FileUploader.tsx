@@ -42,7 +42,9 @@ export const FileUploader = React.memo(
       }
       showNotification({
         title: `Success`,
-        message: `${files.length} files loaded`,
+        message: `${files.length} files loaded. ${files
+          .map(({ name }) => name)
+          .join(', ')}`,
       });
     };
 
