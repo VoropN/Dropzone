@@ -1,6 +1,5 @@
 import * as React from 'react';
 import style from './style.module.scss';
-import { MdEdit } from 'react-icons/md';
 import { IFile } from '../../types';
 
 const byteFormatter = new Intl.NumberFormat('en', {
@@ -12,7 +11,7 @@ const byteFormatter = new Intl.NumberFormat('en', {
 
 export const FileInfo = React.memo(({ file }: { file: IFile }) => {
   const onNameChnage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    file.name = event.target.value;
+    file.name = event.target.textContent;
   };
 
   return (

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import axios from 'axios';
+import axios from '../api/axios';
 import { Button } from '@mantine/core';
 import { FileInfo } from './FileInfo';
 import { IFile } from '../types';
@@ -12,24 +12,25 @@ interface IFileUploader {
 }
 
 export const FileUploader = React.memo(({ files, setFiles }: IFileUploader) => {
-  const [uploadingProgress, setUploadingProgress] = React.useState(0);
-  const onUploadFiles = () => {
+  const [uploadingProgress, setUploadingProgress] = React.useState({
+    i: -1,
+    value: 0,
+  });
+  const onUploadFiles = async () => {
     console.log(files);
     const formData = new FormData();
-    files.forEach((file) => formData.append(file.name, file.file));
-
-    axios
-      .post('./', formData, {
-        onUploadProgress: (progressEvent: ProgressEvent) => {
-          const { loaded, total } = progressEvent;
-          const precentage = Math.floor((loaded * 100) / total);
-          console.log('options');
-          console.log(precentage);
-          if (precentage < 100) {
-            console.log(precentage);
-          }
-        },
+    await Promise.all(
+      files.map(async (file, i) => {
+        formData.append(file.name, file.file);
+        await axios.post('./', formData, {
+          onUploadProgress: (progressEvent: ProgressEvent) => {
+            const { loaded, total } = progressEvent;
+            const precentage = Math.floor((loaded * 100) / total);
+            setUploadingProgress({ value: precentage, i });
+          },
+        });
       })
+    )
       .then((res) => {
         console.log('File Upload success');
       })
@@ -40,7 +41,9 @@ export const FileUploader = React.memo(({ files, setFiles }: IFileUploader) => {
       {files.map((file, i) => (
         <div key={`${file.name}_idx-${i}`}>
           <FileInfo file={file} />
-          <progress max="100" value="80" />
+          {uploadingProgress.i === i && (
+            <progress max="100" value={uploadingProgress.value} />
+          )}
         </div>
       ))}
       <Button className={style.uploadButton} onClick={onUploadFiles}>
