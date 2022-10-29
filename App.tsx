@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Dropzone } from './Dropzone';
-import { FileUploader } from './FileUploader';
+import { Dropzone } from './src/Dropzone';
+import { FileUploader } from './src/FileUploader';
 import './style.scss';
 
 export default function App() {

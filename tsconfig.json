@@ -1,9 +1,9 @@
 {
-  "include": ["./**/*"],
-  "rootDir": "./",
+  "include": ["./src/**/*"],
+  "rootDir": "./src",
   "baseUrl": "./",
   "paths": {
-    "~/*": ["./*"]
+    "~/*": ["./src/*"]
   },
   "compilerOptions": {
     "strict": true,

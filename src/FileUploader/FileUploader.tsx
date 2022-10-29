@@ -36,8 +36,8 @@ export const FileUploader = memo(({ files, setFiles }: IFileUploader) => {
   return (
     <div>
       {files.map((file, i) => (
-        <div>
-          <FileInfo key={`${file.name}_idx-${i}`} file={file} />
+        <div key={`${file.name}_idx-${i}`}>
+          <FileInfo file={file} />
           <progress max="100" value="80" />
         </div>
       ))}

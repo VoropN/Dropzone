@@ -20,6 +20,15 @@ export const Dropzone = memo(
         setIsDropzoneHovered(isHovered);
       }
     };
+    const onLoadFiles = (files: FileList | null) => {
+      if (files?.length) {
+        const fileList = [];
+        for (let i = 0; i < files.length; i++) {
+          fileList.push(files[i]);
+        }
+        setFiles(fileList);
+      }
+    };
     const onDragOver = (event: DragEvent<HTMLLabelElement>) => {
       onHover({ isHovered: true, event });
       event.dataTransfer.dropEffect = 'move';
@@ -34,15 +43,6 @@ export const Dropzone = memo(
       onHover({ isHovered: false, event });
       const { files } = event.dataTransfer;
       onLoadFiles(files);
-    };
-    const onLoadFiles = (files: FileList | null) => {
-      if (files?.length) {
-        const fileList = [];
-        for (let i = 0; i < files.length; i++) {
-          fileList.push(files[i]);
-        }
-        setFiles(fileList);
-      }
     };
     const onSelectFile = (event: ChangeEvent<HTMLInputElement>) => {
       const { files } = event.target;
