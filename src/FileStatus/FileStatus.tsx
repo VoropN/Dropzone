@@ -6,7 +6,7 @@ interface IFileStatus {
   file: IFile;
   progress: number | null;
   loaded?: boolean;
-  updateFile: any;
+  updateFile: (file: IFile) => void;
 }
 
 export const FileStatus = React.memo(

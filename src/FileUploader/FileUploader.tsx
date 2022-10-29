@@ -8,8 +8,12 @@ import { IFile } from '../types';
 
 import style from './style.module.scss';
 
+interface IFileUploader {
+  files: IFile[];
+  updateFile: (fileIndex: number) => (file: IFile) => void;
+}
 export const FileUploader = React.memo(
-  ({ files, updateFile }: { files: IFile[]; updateFile: any }) => {
+  ({ files, updateFile }: IFileUploader) => {
     const [uploadingProgress, setUploadingProgress] = React.useState({
       fileIndex: -1,
       value: 0,
@@ -35,33 +39,35 @@ export const FileUploader = React.memo(
             })
           );
         updateFile(fileIndex++)({ ...file, loaded: true });
-        showNotification({
-          title: `Success`,
-          message: `${files.length} files loaded`,
-        });
       }
+      showNotification({
+        title: `Success`,
+        message: `${files.length} files loaded`,
+      });
     };
 
     return (
-      <div>
-        {files.map((file, idx) => (
-          <FileStatus
-            file={file}
-            key={`${file.name}-idx-${idx}`}
-            updateFile={updateFile(idx)}
-            progress={
-              uploadingProgress.fileIndex === idx
-                ? uploadingProgress.value
-                : null
-            }
-          />
-        ))}
-        {uploadingProgress.fileIndex === -1 && (
-          <Button className={style.uploadButton} onClick={onUploadFiles}>
-            Upload
-          </Button>
-        )}
-      </div>
+      files.some((file) => !file.loaded) && (
+        <div>
+          {files.map((file, idx) => (
+            <FileStatus
+              file={file}
+              key={`${file.name}-idx-${idx}`}
+              updateFile={updateFile(idx)}
+              progress={
+                uploadingProgress.fileIndex === idx
+                  ? uploadingProgress.value
+                  : null
+              }
+            />
+          ))}
+          {uploadingProgress.fileIndex === -1 && (
+            <Button className={style.uploadButton} onClick={onUploadFiles}>
+              Upload
+            </Button>
+          )}
+        </div>
+      )
     );
   }
 );
