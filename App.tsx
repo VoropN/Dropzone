@@ -3,7 +3,7 @@ import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { Dropzone } from './src/Dropzone';
 import { IFileSet, IFile } from './src/types';
-import { FileSet } from './src/FileSet';
+import { FileUploader } from './src/FileUploader';
 
 import './style.scss';
 
@@ -14,7 +14,7 @@ export default function App() {
     [setFileSets]
   );
   const updateFile = React.useCallback(
-    (setIndex: number) => (fileIndex: number, newFile: IFile) =>
+    (setIndex: number) => (fileIndex: number) => (newFile: IFile) =>
       setFileSets((state) => [
         ...state.slice(0, setIndex),
         {
@@ -32,9 +32,15 @@ export default function App() {
   return (
     <MantineProvider withNormalizeCSS withGlobalStyles>
       <NotificationsProvider>
-        {fileSets.map(({ files }, idx) => (
-          <FileSet files={files} key={idx} updateFile={updateFile(idx)} />
-        ))}
+        <div>
+          {fileSets.map(({ files }, idx) => (
+            <FileUploader
+              files={files}
+              key={idx}
+              updateFile={updateFile(idx)}
+            />
+          ))}
+        </div>
         <Dropzone addNewFileSet={addNewFileSet} />
       </NotificationsProvider>
     </MantineProvider>
