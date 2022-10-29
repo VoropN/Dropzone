@@ -2,7 +2,7 @@ import { memo, useState } from 'react';
 import type { DragEvent, ChangeEvent } from 'react';
 import { FiUpload } from 'react-icons/fi';
 import cn from 'classnames';
-import { FileInput } from '~/FileInput';
+import { FileInput } from '../FileInput';
 import style from './style.module.scss';
 
 export const Dropzone = memo(() => {
@@ -22,6 +22,7 @@ export const Dropzone = memo(() => {
   };
   const onDragOver = (event: DragEvent<HTMLLabelElement>) => {
     onHover({ isHovered: true, event });
+    event.dataTransfer.dropEffect = 'move';
   };
   const onDragLeave = (event: DragEvent<HTMLLabelElement>) => {
     onHover({ isHovered: false, event });
@@ -65,7 +66,6 @@ export const Dropzone = memo(() => {
           onDragEnter={onDragEnter}
         >
           <FiUpload className={style.uploadIcon} />
-
           <input
             multiple
             type="file"
