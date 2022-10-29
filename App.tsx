@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Dropzone } from './src/Dropzone';
-import { IFileSet } from './src/types';
+import { IFileSet, IFile } from './src/types';
 import { FileSet } from './src/FileSet';
 
 import './style.scss';
@@ -11,11 +11,26 @@ export default function App() {
     (iFileSet: IFileSet) => setFileSets((state) => [...state, iFileSet]),
     [setFileSets]
   );
-  console.log(fileSets);
+  const updateFile = React.useCallback(
+    (setIndex: number) => (fileIndex: number) => (newFile: IFile) =>
+      setFileSets((state) => [
+        ...state.slice(0, setIndex),
+        {
+          files: [
+            ...state[setIndex].files.slice(0, fileIndex),
+            newFile,
+            ...state[setIndex].files.slice(fileIndex + 1),
+          ],
+        },
+        ...state.slice(setIndex + 1),
+      ]),
+    [setFileSets]
+  );
+
   return (
     <div>
       {fileSets.map(({ files }, idx) => (
-        <FileSet files={files} key={idx} />
+        <FileSet files={files} key={idx} updateFile={updateFile(idx)} />
       ))}
       <Dropzone addNewFileSet={addNewFileSet} />
     </div>
