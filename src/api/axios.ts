@@ -6,17 +6,19 @@ export default {
       onUploadProgress,
     }: { onUploadProgress: (progressEvent: ProgressEvent) => void }
   ) => {
-    const total = 100;
-    let loaded = 0;
-    const step = () => {
-      onUploadProgress({ loaded, total } as any);
-      if (loaded <= total) {
-        window.requestAnimationFrame(step);
-      } else {
-        Promise.resolve();
-      }
-      loaded += 1;
-    };
-    window.requestAnimationFrame(step);
+    return new Promise((resolve) => {
+      const total = 100;
+      let loaded = 0;
+      const step = () => {
+        onUploadProgress({ loaded, total } as any);
+        if (loaded <= total) {
+          window.requestAnimationFrame(step);
+        } else {
+          resolve('done');
+        }
+        loaded += 1;
+      };
+      window.requestAnimationFrame(step);
+    });
   },
 };

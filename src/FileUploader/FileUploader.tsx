@@ -17,7 +17,6 @@ export const FileUploader = React.memo(({ files, setFiles }: IFileUploader) => {
     value: 0,
   });
   const onUploadFiles = async () => {
-    console.log(files);
     const formData = new FormData();
     await Promise.all(
       files.map(async (file, i) => {
@@ -29,6 +28,7 @@ export const FileUploader = React.memo(({ files, setFiles }: IFileUploader) => {
             setUploadingProgress({ value: precentage, i });
           },
         });
+        console.log(i);
       })
     )
       .then((res) => {
