@@ -1,19 +1,19 @@
-import { memo, useState } from 'react';
-import type { DragEvent, ChangeEvent } from 'react';
+import * as React from 'react';
 import { FiUpload } from 'react-icons/fi';
 import cn from 'classnames';
 
+import { IFile } from '../types';
 import style from './style.module.scss';
 
-export const Dropzone = memo(
-  ({ setFiles }: { setFiles: (files: File[]) => void }) => {
-    const [isDropzoneHovered, setIsDropzoneHovered] = useState(false);
+export const Dropzone = React.memo(
+  ({ setFiles }: { setFiles: (files: IFile[]) => void }) => {
+    const [isDropzoneHovered, setIsDropzoneHovered] = React.useState(false);
     const onHover = ({
       isHovered,
       event,
     }: {
       isHovered: boolean;
-      event: DragEvent<HTMLLabelElement>;
+      event: React.DragEvent<HTMLLabelElement>;
     }) => {
       event.preventDefault();
       if (isDropzoneHovered !== isHovered) {
@@ -24,27 +24,28 @@ export const Dropzone = memo(
       if (files?.length) {
         const fileList = [];
         for (let i = 0; i < files.length; i++) {
-          fileList.push(files[i]);
+          const file = files[i];
+          fileList.push({ name: file.name, file });
         }
         setFiles(fileList);
       }
     };
-    const onDragOver = (event: DragEvent<HTMLLabelElement>) => {
+    const onDragOver = (event: React.DragEvent<HTMLLabelElement>) => {
       onHover({ isHovered: true, event });
       event.dataTransfer.dropEffect = 'move';
     };
-    const onDragLeave = (event: DragEvent<HTMLLabelElement>) => {
+    const onDragLeave = (event: React.DragEvent<HTMLLabelElement>) => {
       onHover({ isHovered: false, event });
     };
-    const onDragEnter = (event: DragEvent<HTMLLabelElement>) => {
+    const onDragEnter = (event: React.DragEvent<HTMLLabelElement>) => {
       onHover({ isHovered: true, event });
     };
-    const onDrop = (event: DragEvent<HTMLLabelElement>) => {
+    const onDrop = (event: React.DragEvent<HTMLLabelElement>) => {
       onHover({ isHovered: false, event });
       const { files } = event.dataTransfer;
       onLoadFiles(files);
     };
-    const onSelectFile = (event: ChangeEvent<HTMLInputElement>) => {
+    const onSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
       const { files } = event.target;
       onLoadFiles(files);
     };

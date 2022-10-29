@@ -1,20 +1,22 @@
-import { memo, useState } from 'react';
+import * as React from 'react';
 import axios from 'axios';
 import { Button } from '@mantine/core';
 import { FileInfo } from './FileInfo';
+import { IFile } from '../types';
 
 import style from './style.module.scss';
 
 interface IFileUploader {
-  files: File[];
-  setFiles: (files: File[]) => void;
+  files: IFile[];
+  setFiles: (files: IFile[]) => void;
 }
 
-export const FileUploader = memo(({ files, setFiles }: IFileUploader) => {
-  const [uploadingProgress, setUploadingProgress] = useState(0);
+export const FileUploader = React.memo(({ files, setFiles }: IFileUploader) => {
+  const [uploadingProgress, setUploadingProgress] = React.useState(0);
   const onUploadFiles = () => {
+    console.log(files);
     const formData = new FormData();
-    files.forEach((file) => formData.append(file.name, file));
+    files.forEach((file) => formData.append(file.name, file.file));
 
     axios
       .post('./', formData, {

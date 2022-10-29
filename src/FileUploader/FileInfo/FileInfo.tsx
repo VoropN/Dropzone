@@ -1,5 +1,7 @@
-import { memo } from 'react';
+import * as React from 'react';
 import style from './style.module.scss';
+import { MdEdit } from 'react-icons/md';
+import { IFile } from '../../types';
 
 const byteFormatter = new Intl.NumberFormat('en', {
   notation: 'compact',
@@ -8,11 +10,17 @@ const byteFormatter = new Intl.NumberFormat('en', {
   unitDisplay: 'narrow',
 } as any).format;
 
-export const FileInfo = memo(({ file }: { file: File }) => {
+export const FileInfo = React.memo(({ file }: { file: IFile }) => {
+  const onNameChnage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    file.name = event.target.value;
+  };
+
   return (
     <div className={style.container}>
-      <span className={style.fileName}>{file.name}</span>
-      <span className={style.fileSize}>({byteFormatter(file.size)})</span>
+      <span contentEditable onInput={onNameChnage}>
+        {file.name}
+      </span>
+      <span className={style.fileSize}>({byteFormatter(file.file.size)})</span>
     </div>
   );
 });
