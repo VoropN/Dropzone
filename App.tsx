@@ -8,14 +8,14 @@ import './style.scss';
 export default function App() {
   const [fileSets, setFileSets] = React.useState<IFileSet[]>([]);
   const addNewFileSet = React.useCallback(
-    (iFileSet: IFileSet) => setFileSets((state) => state.concat(iFileSet)),
+    (iFileSet: IFileSet) => setFileSets((state) => [...state, iFileSet]),
     [setFileSets]
   );
-
+  console.log(fileSets);
   return (
     <div>
-      {fileSets.map((fileSet, idx) => (
-        <FileSet fileSet={fileSet} key={idx} />
+      {fileSets.map(({ files }, idx) => (
+        <FileSet files={files} key={idx} />
       ))}
       <Dropzone addNewFileSet={addNewFileSet} />
     </div>

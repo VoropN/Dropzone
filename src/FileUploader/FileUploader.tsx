@@ -8,35 +8,14 @@ import style from './style.module.scss';
 
 interface IFileUploader {
   file: IFile;
+  progress: number;
 }
 
-export const FileUploader = React.memo(({ file }: IFileUploader) => {
-  const [uploadingProgress, setUploadingProgress] = React.useState(0);
-  const onUploadFiles = async () => {
-    const formData = new FormData();
-    formData.append(file.name, file.file);
-    await axios
-      .post('./', formData, {
-        onUploadProgress: (progressEvent: ProgressEvent) => {
-          const { loaded, total } = progressEvent;
-          const precentage = Math.floor((loaded * 100) / total);
-          setUploadingProgress(precentage);
-        },
-      })
-      .then((res) => {
-        console.log('File Successfully Uploaded');
-      })
-      .catch((err) => console.log('File Upload Error'));
-  };
+export const FileUploader = React.memo(({ file, progress }: IFileUploader) => {
   return (
     <div>
-      {!uploadingProgress && (
-        <Button className={style.uploadButton} onClick={onUploadFiles}>
-          Upload
-        </Button>
-      )}
       <FileInfo file={file} />
-      <progress max="100" value={uploadingProgress} />
+      {(progress || file.loaded) && <progress max="100" value={progress} />}
     </div>
   );
 });

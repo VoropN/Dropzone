@@ -23,14 +23,14 @@ export const Dropzone = React.memo(({ addNewFileSet }: IDropzone) => {
       setIsDropzoneHovered(isHovered);
     }
   };
-  const onLoadFiles = (files: FileList | null) => {
-    if (files?.length) {
-      const fileSet: IFileSet = [];
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        fileSet.push({ name: file.name, file });
+  const onLoadFiles = (fileList: FileList | null) => {
+    if (fileList?.length) {
+      const files = [];
+      for (let i = 0; i < fileList.length; i++) {
+        const file = fileList[i];
+        files.push({ name: file.name, file });
       }
-      addNewFileSet(fileSet);
+      addNewFileSet({ files });
     }
   };
   const onDragOver = (event: React.DragEvent<HTMLLabelElement>) => {

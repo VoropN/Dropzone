@@ -4,4 +4,6 @@ export interface IFile {
   loaded?: boolean;
 }
 
-export type IFileSet = IFile[];
+export interface IFileSet {
+  files: IFile[];
+}
