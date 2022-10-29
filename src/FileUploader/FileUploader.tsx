@@ -13,26 +13,27 @@ interface IFileUploader {
 
 export const FileUploader = React.memo(({ files, setFiles }: IFileUploader) => {
   const [uploadingProgress, setUploadingProgress] = React.useState({
-    i: -1,
+    fileIndex: -1,
     value: 0,
   });
   const onUploadFiles = async () => {
-    const formData = new FormData();
-    await Promise.all(
-      files.map(async (file, i) => {
+    (async function () {
+      let fileIndex = 0;
+      for await (const file of files) {
+        const formData = new FormData();
         formData.append(file.name, file.file);
         await axios.post('./', formData, {
           onUploadProgress: (progressEvent: ProgressEvent) => {
             const { loaded, total } = progressEvent;
             const precentage = Math.floor((loaded * 100) / total);
-            setUploadingProgress({ value: precentage, i });
+            setUploadingProgress({ value: precentage, fileIndex });
           },
         });
-        console.log(i);
-      })
-    )
+        ++fileIndex;
+      }
+    })()
       .then((res) => {
-        console.log('File Upload success');
+        setFiles(null);
       })
       .catch((err) => console.log('File Upload Error'));
   };
@@ -41,8 +42,15 @@ export const FileUploader = React.memo(({ files, setFiles }: IFileUploader) => {
       {files.map((file, i) => (
         <div key={`${file.name}_idx-${i}`}>
           <FileInfo file={file} />
-          {uploadingProgress.i === i && (
-            <progress max="100" value={uploadingProgress.value} />
+          {uploadingProgress.fileIndex >= i && (
+            <progress
+              max="100"
+              value={
+                uploadingProgress.fileIndex === i
+                  ? uploadingProgress.value
+                  : 100
+              }
+            />
           )}
         </div>
       ))}
