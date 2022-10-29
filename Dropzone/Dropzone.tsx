@@ -52,7 +52,7 @@ export const Dropzone = memo(() => {
     <div className={style.container}>
       {files ? (
         files.map((file, i) => (
-          <FileInput key={`${file.name}_idx-${i}` file={file} />
+          <FileInput key={`${file.name}_idx-${i}`} file={file} />
         ))
       ) : (
         <label

@@ -1,4 +1,5 @@
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useRef } from 'react';
+import { Button } from '@mantine/core';
 
 export const FileInput = memo(({ file }: { file: File }) => {
   const fileRef = useRef(null);
