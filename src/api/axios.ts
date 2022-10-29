@@ -7,7 +7,7 @@ export default {
     }: { onUploadProgress: (progressEvent: ProgressEvent) => void }
   ) => {
     return new Promise((resolve) => {
-      const total = 100;
+      const total = 1000;
       let loaded = 0;
       const step = () => {
         onUploadProgress({ loaded, total } as any);

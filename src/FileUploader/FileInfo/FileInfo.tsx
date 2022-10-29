@@ -16,9 +16,11 @@ export const FileInfo = React.memo(({ file }: { file: IFile }) => {
 
   return (
     <div className={style.container}>
-      <span contentEditable onInput={onNameChnage}>
-        {file.name}
-      </span>
+      {file.loaded ? (
+        <span onInput={onNameChnage}>{file.name}</span>
+      ) : (
+        <input value={file.name} onChange={onNameChnage} />
+      )}
       <span className={style.fileSize}>({byteFormatter(file.file.size)})</span>
     </div>
   );

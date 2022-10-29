@@ -11,7 +11,7 @@
     "lib": ["dom", "es2015"],
     "jsx": "react-jsx",
     "module": "commonjs",
-    "jsxFactoryPath": ["createElement"],
+    // "jsxFactoryPath": ["createElement"],
     "jsxModule": "react"
   }
 }

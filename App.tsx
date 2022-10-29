@@ -1,16 +1,24 @@
 import * as React from 'react';
 import { Dropzone } from './src/Dropzone';
 import { FileUploader } from './src/FileUploader';
-import { IFile } from './src/types';
+import { IFileSet } from './src/types';
+import { FileSet } from './FileSet';
 
 import './style.scss';
 
 export default function App() {
-  const [files, setFiles] = React.useState<null | IFile[]>(null);
+  const [fileSets, setFileSets] = React.useState<IFileSet[]>([]);
+  const addNewFileSet = React.useCallback(
+    (iFileSet: IFileSet) => setFileSets((state) => state.concat(iFileSet)),
+    [setFileSets]
+  );
 
-  return files ? (
-    <FileUploader files={files} setFiles={setFiles} />
-  ) : (
-    <Dropzone setFiles={setFiles} />
+  return (
+    <div>
+      {fileSets.map((fileSet, idx) => (
+        <FileSet fileSet={fileSet} key={idx} />
+      ))}
+      <Dropzone addNewFileSet={addNewFileSet} />
+    </div>
   );
 }

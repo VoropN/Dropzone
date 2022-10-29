@@ -7,56 +7,36 @@ import { IFile } from '../types';
 import style from './style.module.scss';
 
 interface IFileUploader {
-  files: IFile[];
-  setFiles: (files: IFile[]) => void;
+  file: IFile;
 }
 
-export const FileUploader = React.memo(({ files, setFiles }: IFileUploader) => {
-  const [uploadingProgress, setUploadingProgress] = React.useState({
-    fileIndex: -1,
-    value: 0,
-  });
+export const FileUploader = React.memo(({ file }: IFileUploader) => {
+  const [uploadingProgress, setUploadingProgress] = React.useState(0);
   const onUploadFiles = async () => {
-    (async function () {
-      let fileIndex = 0;
-      for await (const file of files) {
-        const formData = new FormData();
-        formData.append(file.name, file.file);
-        await axios.post('./', formData, {
-          onUploadProgress: (progressEvent: ProgressEvent) => {
-            const { loaded, total } = progressEvent;
-            const precentage = Math.floor((loaded * 100) / total);
-            setUploadingProgress({ value: precentage, fileIndex });
-          },
-        });
-        ++fileIndex;
-      }
-    })()
+    const formData = new FormData();
+    formData.append(file.name, file.file);
+    await axios
+      .post('./', formData, {
+        onUploadProgress: (progressEvent: ProgressEvent) => {
+          const { loaded, total } = progressEvent;
+          const precentage = Math.floor((loaded * 100) / total);
+          setUploadingProgress(precentage);
+        },
+      })
       .then((res) => {
-        setFiles(null);
+        console.log('File Successfully Uploaded');
       })
       .catch((err) => console.log('File Upload Error'));
   };
   return (
     <div>
-      {files.map((file, i) => (
-        <div key={`${file.name}_idx-${i}`}>
-          <FileInfo file={file} />
-          {uploadingProgress.fileIndex >= i && (
-            <progress
-              max="100"
-              value={
-                uploadingProgress.fileIndex === i
-                  ? uploadingProgress.value
-                  : 100
-              }
-            />
-          )}
-        </div>
-      ))}
-      <Button className={style.uploadButton} onClick={onUploadFiles}>
-        Upload
-      </Button>
+      {!uploadingProgress && (
+        <Button className={style.uploadButton} onClick={onUploadFiles}>
+          Upload
+        </Button>
+      )}
+      <FileInfo file={file} />
+      <progress max="100" value={uploadingProgress} />
     </div>
   );
 });
