@@ -2,6 +2,7 @@ import { memo, useState } from 'react';
 import type { DragEvent, ChangeEvent } from 'react';
 import { FiUpload } from 'react-icons/fi';
 import cn from 'classnames';
+import { FileInput } from '~/FileInput';
 import style from './style.module.scss';
 
 export const Dropzone = memo(() => {
@@ -36,8 +37,8 @@ export const Dropzone = memo(() => {
   const onLoadFiles = (files: FileList | null) => {
     if (files?.length) {
       const fileList = [];
-      for (const idx in files) {
-        fileList.push(files[idx]);
+      for (let i = 0; i < files.length; i++) {
+        fileList.push(files[i]);
       }
       setFiles(fileList);
     }
@@ -49,27 +50,31 @@ export const Dropzone = memo(() => {
 
   return (
     <div className={style.container}>
-      <label
-        className={cn(style.dropzone, {
-          [style.dropzoneHover]: isDropzoneHovered,
-        })}
-        onDrop={onDrop}
-        onDragOver={onDragOver}
-        onDragLeave={onDragLeave}
-        onDragEnter={onDragEnter}
-      >
-        <FiUpload className={style.uploadIcon} />
-        {files?.map((file) => (
-          <div>{file.name}</div>
-        ))}
-        <input
-          multiple
-          type="file"
-          tabIndex={-1}
-          className={style.fileInput}
-          onChange={onUploadFile}
-        />
-      </label>
+      {files ? (
+        files.map((file, i) => (
+          <FileInput key={`${file.name}_idx-${i}` file={file} />
+        ))
+      ) : (
+        <label
+          className={cn(style.dropzone, {
+            [style.dropzoneHover]: isDropzoneHovered,
+          })}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDragEnter={onDragEnter}
+        >
+          <FiUpload className={style.uploadIcon} />
+
+          <input
+            multiple
+            type="file"
+            tabIndex={-1}
+            onChange={onUploadFile}
+            className={style.fileInput}
+          />
+        </label>
+      )}
     </div>
   );
 });
