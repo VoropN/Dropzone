@@ -1,5 +1,7 @@
 import type { DragEvent } from 'react';
 import { memo, useState } from 'react';
+import { FiUpload } from 'react-icons/fi';
+import { Button } from '@mantine/core';
 import cn from 'classnames';
 import style from './style.module.scss';
 
@@ -41,6 +43,10 @@ export const Dropzone = memo(() => {
         onDragLeave={onDragLeave}
         onDragEnter={onDragEnter}
       >
+        <FiUpload className={style.uploadIcon} />
+        <Button variant="field" size="xs">
+          Upload
+        </Button>
         <input multiple type="file" tabIndex={-1} className={style.fileInput} />
       </label>
     </div>

@@ -22,12 +22,18 @@
   transition: background-color 150ms ease;
   position: relative;
   background-color: #fff;
-  display: flex;
+  display: grid;
+  justify-content: space-around;
+  align-items: baseline;
 
   &:hover,
   &.dropzoneHover {
     background-color: #f8f9fa;
   }
+}
+
+.uploadIcon {
+  margin: 5px auto;
 }
 
 .fileInput {

@@ -10,7 +10,6 @@
     "esModuleInterop": true,
     "lib": ["dom", "es2015"],
     "jsx": "react-jsx",
-    "skipLibCheck": true,
     "module": "commonjs",
     "jsxFactoryPath": ["createElement"],
     "jsxModule": "react"
