@@ -2,7 +2,8 @@ import { memo, useState } from 'react';
 import type { DragEvent, ChangeEvent } from 'react';
 import { FiUpload } from 'react-icons/fi';
 import cn from 'classnames';
-import { FileInput } from '../FileInput';
+
+import { UploadFile } from '../UploadFile';
 import style from './style.module.scss';
 
 export const Dropzone = memo(() => {
@@ -52,9 +53,7 @@ export const Dropzone = memo(() => {
   return (
     <div className={style.container}>
       {files ? (
-        files.map((file, i) => (
-          <FileInput key={`${file.name}_idx-${i}`} file={file} />
-        ))
+        <UploadFile files={files} />
       ) : (
         <label
           className={cn(style.dropzone, {

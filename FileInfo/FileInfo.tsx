@@ -8,7 +8,7 @@ const byteFormatter = new Intl.NumberFormat('en', {
   unitDisplay: 'narrow',
 } as any).format;
 
-export const FileInput = memo(({ file }: { file: File }) => {
+export const FileInfo = memo(({ file }: { file: File }) => {
   return (
     <div className={style.container}>
       <span className={style.fileName}>{file.name}</span>
