@@ -7,7 +7,7 @@ import App from './App';
 
 createServer({
   routes() {
-    this.post('/api/save-file', async (_, request) => {});
+    this.post('/api/save-file');
   },
 });
 
