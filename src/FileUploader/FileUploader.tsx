@@ -17,12 +17,11 @@ interface IFileUploader {
 
 export const FileUploader = React.memo(
   ({ files, updateFile, setFiles }: IFileUploader) => {
-    const [uploadingProgress, setUploadingProgress] = React.useState({
-      fileId: null,
-      value: 0,
-    });
+    const [uploadingProgress, setUploadingProgress] = React.useState<
+      Record<string, number>
+    >({});
     const onUploadFiles = async () => {
-      const filesLoaded = [];
+      const filesLoaded: IFile[] = [];
       const filesToUpload = files.filter(
         (file) => !file.loaded && !file.inProgress
       );
@@ -41,7 +40,10 @@ export const FileUploader = React.memo(
             onUploadProgress: (progressEvent: ProgressEvent) => {
               const { loaded, total } = progressEvent;
               const precentage = Math.floor((loaded * 100) / total);
-              setUploadingProgress({ value: precentage, fileId: file.id });
+              setUploadingProgress((state) => ({
+                ...state,
+                [file.id]: precentage,
+              }));
             },
           })
           .then(() => {
@@ -91,11 +93,7 @@ export const FileUploader = React.memo(
             file={file}
             key={file.id}
             updateFile={updateFile}
-            progress={
-              uploadingProgress.fileId === file.id
-                ? uploadingProgress.value
-                : null
-            }
+            progress={uploadingProgress[file.id]}
           />
         ))}
       </div>
