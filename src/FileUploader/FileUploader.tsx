@@ -21,16 +21,6 @@ export const FileUploader = React.memo(
       fileId: null,
       value: 0,
     });
-    const sortedFiles = React.useMemo(
-      () =>
-        files.slice().sort((first, second) => {
-          if (first.loaded && !second.loaded) {
-            return 1;
-          }
-          return 0;
-        }),
-      [files]
-    );
     const onUploadFiles = async () => {
       const filesLoaded = [];
       const filesToUpload = files.filter(
@@ -38,7 +28,9 @@ export const FileUploader = React.memo(
       );
       setFiles(
         files.map((file) =>
-          file.loaded ? file : { ...file, inProgress: true }
+          file.loaded
+            ? file
+            : { ...file, errors: null, hasError: false, inProgress: true }
         )
       );
       for await (const file of filesToUpload) {
@@ -94,7 +86,7 @@ export const FileUploader = React.memo(
           Upload
         </Button>
 
-        {sortedFiles.map((file) => (
+        {files.map((file) => (
           <FileStatus
             file={file}
             key={file.id}

@@ -25,6 +25,11 @@ export const FileInfo = React.memo(({ file, updateFile }: IFileInfo) => {
 
   return (
     <div className={style.container}>
+      <div>
+        {file.hasErrors && <VscError className={style.fileHasErrors} />}
+        {file.loaded && <AiOutlineCheckCircle className={style.fileLoaded} />}
+      </div>
+
       {file.loaded ? (
         <span onInput={onNameChnage}>{fileName}</span>
       ) : (
@@ -35,8 +40,6 @@ export const FileInfo = React.memo(({ file, updateFile }: IFileInfo) => {
         />
       )}
       <span className={style.fileSize}>({byteFormatter(file.file.size)})</span>
-      {file.hasErrors && <VscError className={style.fileHasErrors} />}
-      {file.loaded && <AiOutlineCheckCircle className={style.fileLoaded} />}
     </div>
   );
 });

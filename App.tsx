@@ -10,7 +10,7 @@ import './style.scss';
 export default function App() {
   const [files, setFiles] = React.useState<IFile[]>([]);
   const addFiles = React.useCallback(
-    (files: IFile[]) => setFiles((state) => [...state, ...files]),
+    (files: IFile[]) => setFiles((state) => [...files, ...state]),
     [setFiles]
   );
   const updateFile = React.useCallback(
@@ -25,7 +25,11 @@ export default function App() {
     <MantineProvider withNormalizeCSS withGlobalStyles>
       <NotificationsProvider>
         <Dropzone addFiles={addFiles} />
-        <FileUploader files={files} updateFile={updateFile} setFiles={setFiles}/>
+        <FileUploader
+          files={files}
+          updateFile={updateFile}
+          setFiles={setFiles}
+        />
       </NotificationsProvider>
     </MantineProvider>
   );
