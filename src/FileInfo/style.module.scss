@@ -9,6 +9,8 @@
 
 .fileName {
   font-weight: bold;
+  margin-left: 20px;
+  line-height: 22px;
 }
 
 .fileSize {
@@ -21,4 +23,9 @@
 
 .fileHasErrors {
   color: red;
+}
+
+.status {
+  position: absolute;
+  transform: translateY(15%);
 }

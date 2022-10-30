@@ -25,20 +25,21 @@ export const FileInfo = React.memo(({ file, updateFile }: IFileInfo) => {
 
   return (
     <div className={style.container}>
-      <div>
+      <div className={style.status}>
         {file.hasErrors && <VscError className={style.fileHasErrors} />}
         {file.loaded && <AiOutlineCheckCircle className={style.fileLoaded} />}
       </div>
-
-      {file.loaded ? (
-        <span onInput={onNameChnage}>{fileName}</span>
-      ) : (
-        <input
-          value={fileName}
-          onChange={onNameChnage}
-          onBlur={applyUpdateName}
-        />
-      )}
+      <div className={style.fileName}>
+        {file.loaded ? (
+          <span onInput={onNameChnage}>{fileName}</span>
+        ) : (
+          <input
+            value={fileName}
+            onChange={onNameChnage}
+            onBlur={applyUpdateName}
+          />
+        )}
+      </div>
       <span className={style.fileSize}>({byteFormatter(file.file.size)})</span>
     </div>
   );
