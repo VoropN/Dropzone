@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { VscError } from 'react-icons/vsc';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
-import cn from 'classnames';
 import style from './style.module.scss';
 import { IFile } from '../types';
 

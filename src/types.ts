@@ -4,5 +4,6 @@ export interface IFile {
   loaded?: boolean;
   errors?: any;
   hasErrors?: boolean;
+  inProgress?: boolean;
   id: number;
 }

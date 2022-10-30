@@ -2,6 +2,7 @@ import * as React from 'react';
 import axios from 'axios';
 import { Button } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
+import cn from 'classnames';
 
 import { FileStatus } from '../FileStatus';
 import { IFile } from '../types';
@@ -10,17 +11,37 @@ import style from './style.module.scss';
 
 interface IFileUploader {
   files: IFile[];
-  updateFile: (fileIndex: number) => (file: IFile) => void;
+  setFiles: (files: IFile[]) => void;
+  updateFile: (newFile: IFile) => void;
 }
+
 export const FileUploader = React.memo(
-  ({ files, updateFile }: IFileUploader) => {
+  ({ files, updateFile, setFiles }: IFileUploader) => {
     const [uploadingProgress, setUploadingProgress] = React.useState({
-      fileIndex: -1,
+      fileId: null,
       value: 0,
     });
+    const sortedFiles = React.useMemo(
+      () =>
+        files.slice().sort((first, second) => {
+          if (first.loaded && !second.loaded) {
+            return 1;
+          }
+          return 0;
+        }),
+      [files]
+    );
     const onUploadFiles = async () => {
-      let fileIndex = 0;
-      for await (const file of files) {
+      const filesLoaded = [];
+      const filesToUpload = files.filter(
+        (file) => !file.loaded && !file.inProgress
+      );
+      setFiles(
+        files.map((file) =>
+          file.loaded ? file : { ...file, inProgress: true }
+        )
+      );
+      for await (const file of filesToUpload) {
         const formData = new FormData();
         formData.append(file.name, file.file);
         await axios
@@ -28,53 +49,64 @@ export const FileUploader = React.memo(
             onUploadProgress: (progressEvent: ProgressEvent) => {
               const { loaded, total } = progressEvent;
               const precentage = Math.floor((loaded * 100) / total);
-              setUploadingProgress({ value: precentage, fileIndex });
+              setUploadingProgress({ value: precentage, fileId: file.id });
             },
           })
+          .then(() => {
+            updateFile({
+              ...file,
+              loaded: true,
+              inProgress: false,
+              errors: null,
+              hasErrors: false,
+            });
+            filesLoaded.push(file);
+          })
           .catch((err) => {
-            updateFile(fileIndex++)({
+            updateFile({
               ...file,
               errors: err.message,
               hasErrors: true,
             });
             showNotification({
-              title: `Error ${file.name}`,
-              message: err.message,
+              title: 'Error',
+              message: `${file.name} was not loaded! ${err.message}`,
               color: 'red',
             });
           });
-        updateFile(fileIndex++)({ ...file, loaded: true });
       }
       showNotification({
         title: `Success`,
-        message: `${files.length} files loaded. ${files
+        message: `${filesLoaded.length} files loaded. ${filesLoaded
           .map(({ name }) => name)
           .join(', ')}`,
       });
     };
 
     return (
-      files.some((file) => !file.loaded) && (
-        <div>
-          {files.map((file, idx) => (
-            <FileStatus
-              file={file}
-              key={`${file.name}-idx-${idx}`}
-              updateFile={updateFile(idx)}
-              progress={
-                uploadingProgress.fileIndex === idx
-                  ? uploadingProgress.value
-                  : null
-              }
-            />
-          ))}
-          {uploadingProgress.fileIndex === -1 && (
-            <Button className={style.uploadButton} onClick={onUploadFiles}>
-              Upload
-            </Button>
-          )}
-        </div>
-      )
+      <div>
+        <Button
+          className={cn(style.uploadButton, {
+            [style.hideUploadButton]: files.every((file) => file.loaded),
+          })}
+          onClick={onUploadFiles}
+        >
+          Upload
+        </Button>
+
+        {sortedFiles.map((file) => (
+          <FileStatus
+            file={file}
+            key={file.id}
+            updateFile={updateFile}
+            progress={
+              uploadingProgress.fileId === file.id
+                ? uploadingProgress.value
+                : null
+            }
+          />
+        ))}
+      </div>
     );
   }
 );

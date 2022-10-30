@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { Dropzone } from './src/Dropzone';
-import { IFileSet, IFile } from './src/types';
+import { IFile } from './src/types';
 import { FileUploader } from './src/FileUploader';
 
 import './style.scss';
@@ -24,8 +24,8 @@ export default function App() {
   return (
     <MantineProvider withNormalizeCSS withGlobalStyles>
       <NotificationsProvider>
-        <FileUploader files={files} updateFile={updateFile} />
         <Dropzone addFiles={addFiles} />
+        <FileUploader files={files} updateFile={updateFile} setFiles={setFiles}/>
       </NotificationsProvider>
     </MantineProvider>
   );

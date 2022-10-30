@@ -32,7 +32,8 @@ export const Dropzone = React.memo(({ addFiles }: IDropzone) => {
         files.push({ name: file.name, file, id: currentId + i });
       }
       setCurrentId(currentId + fileList.length);
-      addFiles({ files });
+      addFiles(files);
+      console.log(currentId, files);
     }
   };
   const onDragOver = (event: React.DragEvent<HTMLLabelElement>) => {
