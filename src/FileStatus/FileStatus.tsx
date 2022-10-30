@@ -14,9 +14,7 @@ export const FileStatus = React.memo(
     return (
       <div>
         <FileInfo file={file} updateFile={updateFile} />
-        {(file.loaded || progress) && (
-          <progress max="100" value={file.loaded ? 100 : progress} />
-        )}
+        {<progress max="100" value={file.loaded ? 100 : progress ?? 0} />}
       </div>
     );
   }

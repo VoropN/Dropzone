@@ -1,4 +1,7 @@
 .container {
+  display: flex;
+  align-items: baseline;
+
   &:not(:first-of-type) {
     margin-top: 10px;
   }
@@ -10,4 +13,12 @@
 
 .fileSize {
   margin-left: 10px;
+}
+
+.fileLoaded {
+  color: greenyellow;
+}
+
+.fileHasErrors {
+  color: red;
 }

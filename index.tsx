@@ -7,7 +7,11 @@ import App from './App';
 
 createServer({
   routes() {
-    this.post('/api/save-file', () => null);
+    this.post('/api/save-file', (_, request) => {
+      if (Math.random() > 0.1) {
+        throw new Error();
+      }
+    });
   },
 });
 

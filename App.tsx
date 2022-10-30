@@ -8,40 +8,24 @@ import { FileUploader } from './src/FileUploader';
 import './style.scss';
 
 export default function App() {
-  const [fileSets, setFileSets] = React.useState<IFileSet[]>([]);
-  const addNewFileSet = React.useCallback(
-    (iFileSet: IFileSet) => setFileSets((state) => [...state, iFileSet]),
-    [setFileSets]
+  const [files, setFiles] = React.useState<IFile[]>([]);
+  const addFiles = React.useCallback(
+    (files: IFile[]) => setFiles((state) => [...state, ...files]),
+    [setFiles]
   );
   const updateFile = React.useCallback(
-    (setIndex: number) => (fileIndex: number) => (newFile: IFile) =>
-      setFileSets((state) => [
-        ...state.slice(0, setIndex),
-        {
-          files: [
-            ...state[setIndex].files.slice(0, fileIndex),
-            newFile,
-            ...state[setIndex].files.slice(fileIndex + 1),
-          ],
-        },
-        ...state.slice(setIndex + 1),
-      ]),
-    [setFileSets]
+    (newFile: IFile) =>
+      setFiles((state) =>
+        state.map((file) => (file.id === newFile.id ? newFile : file))
+      ),
+    [setFiles]
   );
 
   return (
     <MantineProvider withNormalizeCSS withGlobalStyles>
       <NotificationsProvider>
-        <div>
-          {fileSets.map(({ files }, idx) => (
-            <FileUploader
-              files={files}
-              key={idx}
-              updateFile={updateFile(idx)}
-            />
-          ))}
-        </div>
-        <Dropzone addNewFileSet={addNewFileSet} />
+        <FileUploader files={files} updateFile={updateFile} />
+        <Dropzone addFiles={addFiles} />
       </NotificationsProvider>
     </MantineProvider>
   );

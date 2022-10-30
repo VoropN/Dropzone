@@ -2,14 +2,15 @@ import * as React from 'react';
 import { FiUpload } from 'react-icons/fi';
 import cn from 'classnames';
 
-import { IFileSet } from '../types';
+import { IFile } from '../types';
 import style from './style.module.scss';
 
 interface IDropzone {
-  addNewFileSet: (fileSet: IFileSet) => void;
+  addFiles: (files: IFile[]) => void;
 }
 
-export const Dropzone = React.memo(({ addNewFileSet }: IDropzone) => {
+export const Dropzone = React.memo(({ addFiles }: IDropzone) => {
+  const [currentId, setCurrentId] = React.useState(1);
   const [isDropzoneHovered, setIsDropzoneHovered] = React.useState(false);
   const onHover = ({
     isHovered,
@@ -28,9 +29,10 @@ export const Dropzone = React.memo(({ addNewFileSet }: IDropzone) => {
       const files = [];
       for (let i = 0; i < fileList.length; i++) {
         const file = fileList[i];
-        files.push({ name: file.name, file });
+        files.push({ name: file.name, file, id: currentId + i });
       }
-      addNewFileSet({ files });
+      setCurrentId(currentId + fileList.length);
+      addFiles({ files });
     }
   };
   const onDragOver = (event: React.DragEvent<HTMLLabelElement>) => {

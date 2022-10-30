@@ -31,13 +31,18 @@ export const FileUploader = React.memo(
               setUploadingProgress({ value: precentage, fileIndex });
             },
           })
-          .catch((err) =>
+          .catch((err) => {
+            updateFile(fileIndex++)({
+              ...file,
+              errors: err.message,
+              hasErrors: true,
+            });
             showNotification({
               title: `Error ${file.name}`,
               message: err.message,
               color: 'red',
-            })
-          );
+            });
+          });
         updateFile(fileIndex++)({ ...file, loaded: true });
       }
       showNotification({
