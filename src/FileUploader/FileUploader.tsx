@@ -57,6 +57,10 @@ export const FileUploader = React.memo(
             filesLoaded.push(file);
           })
           .catch((err) => {
+            setUploadingProgress((state) => ({
+              ...state,
+              [file.id]: 0,
+            }));
             updateFile({
               ...file,
               errors: err.message,
