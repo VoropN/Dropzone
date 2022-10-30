@@ -8,7 +8,7 @@ import App from './App';
 createServer({
   routes() {
     this.post('/api/save-file', (_, request) => {
-      if (Math.random() > 0.7) {
+      if (Math.random() > 0.9) {
         throw new Error();
       }
     });
