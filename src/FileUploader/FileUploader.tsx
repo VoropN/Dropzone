@@ -73,19 +73,22 @@ export const FileUploader = React.memo(
             });
           });
       }
-      showNotification({
-        title: `Success`,
-        message: `${filesLoaded.length} files loaded. ${filesLoaded
-          .map(({ name }) => name)
-          .join(', ')}`,
-      });
+      filesLoaded.length &&
+        showNotification({
+          title: `Success`,
+          message: `${filesLoaded.length} files loaded. ${filesLoaded
+            .map(({ name }) => name)
+            .join(', ')}`,
+        });
     };
 
     return (
       <div>
         <Button
           className={cn(style.uploadButton, {
-            [style.hideUploadButton]: files.every((file) => file.loaded),
+            [style.hideUploadButton]: files.every(
+              (file) => file.loaded || file.inProgress
+            ),
           })}
           onClick={onUploadFiles}
         >
