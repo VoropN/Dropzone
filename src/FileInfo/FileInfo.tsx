@@ -18,7 +18,7 @@ interface IFileInfo {
 
 export const FileInfo = React.memo(({ file, updateFile }: IFileInfo) => {
   const [fileName, setFileName] = React.useState(file.name);
-  const onNameChnage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFileName(event.target.value);
   };
   const applyUpdateName = () => updateFile({ ...file, name: fileName });
@@ -31,11 +31,11 @@ export const FileInfo = React.memo(({ file, updateFile }: IFileInfo) => {
       </div>
       <div className={style.fileName}>
         {file.loaded ? (
-          <span onInput={onNameChnage}>{fileName}</span>
+          <span>{fileName}</span>
         ) : (
           <input
             value={fileName}
-            onChange={onNameChnage}
+            onChange={onNameChange}
             onBlur={applyUpdateName}
           />
         )}
