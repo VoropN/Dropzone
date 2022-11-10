@@ -31,7 +31,7 @@ export const FileInfo = React.memo(({ file, updateFile }: IFileInfo) => {
       </div>
       <div className={style.fileName}>
         {file.loaded ? (
-          <span>{fileName}</span>
+          <span>{file.custodian ?? ''} / {fileName}</span>
         ) : (
           <input
             value={fileName}

@@ -6,4 +6,5 @@ export interface IFile {
   hasErrors?: boolean;
   inProgress?: boolean;
   id: number;
+  custodian?: string;
 }

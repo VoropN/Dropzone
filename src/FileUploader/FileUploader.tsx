@@ -5,6 +5,7 @@ import { showNotification } from '@mantine/notifications';
 import cn from 'classnames';
 
 import { FileStatus } from '../FileStatus';
+import { Custordian } from '../Custordian';
 import { IFile } from '../types';
 
 import style from './style.module.scss';
@@ -17,14 +18,16 @@ interface IFileUploader {
 
 export const FileUploader = React.memo(
   ({ files, updateFile, setFiles }: IFileUploader) => {
+    const [custodian, setCustodian] = React.useState<string>('');
     const [uploadingProgress, setUploadingProgress] = React.useState<
       Record<string, number>
     >({});
+
     const onUploadFiles = async () => {
       const filesLoaded: IFile[] = [];
-      const filesToUpload = files.filter(
-        (file) => !file.loaded && !file.inProgress
-      );
+      const filesToUpload = files
+        .filter((file) => !file.loaded && !file.inProgress)
+        .map((file) => ({ ...file, custodian }));
       setFiles(
         files.map((file) =>
           file.loaded
@@ -84,6 +87,7 @@ export const FileUploader = React.memo(
 
     return (
       <div>
+        <Custordian custodian={custodian} setCustodian={setCustodian} />
         <Button
           className={cn(style.uploadButton, {
             [style.hideUploadButton]: files.every(
@@ -94,7 +98,6 @@ export const FileUploader = React.memo(
         >
           Upload
         </Button>
-
         {files.map((file) => (
           <FileStatus
             file={file}
