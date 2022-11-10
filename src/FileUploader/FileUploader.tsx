@@ -5,7 +5,7 @@ import { showNotification } from '@mantine/notifications';
 import cn from 'classnames';
 
 import { FileStatus } from '../FileStatus';
-import { Custordian } from '../Custordian';
+import { Custodian } from '../Custodian';
 import { IFile } from '../types';
 
 import style from './style.module.scss';
@@ -87,7 +87,7 @@ export const FileUploader = React.memo(
 
     return (
       <div>
-        <Custordian custodian={custodian} setCustodian={setCustodian} />
+        <Custodian custodian={custodian} setCustodian={setCustodian} />
         <Button
           className={cn(style.uploadButton, {
             [style.hideUploadButton]: files.every(

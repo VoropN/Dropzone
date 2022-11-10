@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-interface ICustordian {
+interface ICustodian {
   custodian: string;
   setCustodian: (custodian: string) => void;
 }
 
-export const Custordian = React.memo(
-  ({ custodian, setCustodian }: ICustordian) => {
+export const Custodian = React.memo(
+  ({ custodian, setCustodian }: ICustodian) => {
     const updateCustodian = (event: React.ChangeEvent<HTMLInputElement>) => {
       setCustodian(event.target.value);
     };
