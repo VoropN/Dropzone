@@ -13,7 +13,7 @@ export const Custodian = React.memo(
 
     return (
       <>
-        <h4>Custodian: </h4>
+        <b>Custodian: </b>
         <input type="text" value={custodian} onChange={updateCustodian} />
       </>
     );
